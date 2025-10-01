@@ -1,0 +1,10 @@
+<%- base_url = "/node/#{host}/#{port}" -%>
+<%- marimo_url = "#{base_url}?access_token=#{password}" -%>
+
+<p>
+  <a href="<%= marimo_url %>" target="_blank" class="btn btn-primary">Open Marimo</a>
+</p>
+
+<!--
+<iframe src="<%= marimo_url %>" width="100%" height="800px"></iframe>
+-->

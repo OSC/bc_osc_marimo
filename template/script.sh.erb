@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+<%
+notebook_path = ''
+working_dir = Pathname.new(context.working_dir)
+sandbox=''
+if ! working_dir.exist?
+    working_dir = Pathname.new(ENV['HOME'])
+elsif working_dir.file?
+    notebook_path = working_dir
+    working_dir = working_dir.parent
+    if context.sandbox == '1'
+        sandbox='--sandbox'
+    end
+end
+%>
+
+
+# Clean the environment
+module purge
+
+cd <%= working_dir.to_s %>
+
+module restore
+
+source /etc/os-release
+
+#
+# Start marimo
+#
+
+# Load the required environment
+<%- unless context.cuda_version.empty? || context.cuda_version == 'none' -%>
+module load <%= context.cuda_version %>
+<%- end -%>
+
+<% 
+if !context.venv.empty?
+    venv = Pathname.new(context.venv)
+    if ! venv.exist?
+%>
+module load project/ondemand app_marimo/<%= context.marimo_version %>
+<% else %>
+venv=<%= venv.to_s %>
+if [ -d "$venv/conda-meta" ]; then
+    module load miniconda3
+    source activate $venv
+    conda install -c conda-forge marimo uv
+else
+    source $venv/bin/activate
+    pip install marimo uv
+fi
+<% 
+end
+else 
+%>
+module load project/ondemand app_marimo/<%= context.marimo_version %>
+<% end %>
+
+set -x
+marimo edit <%= sandbox %> --port=${port} --token-password=${password} --host 0.0.0.0 --base-url /node/${host}/${port} <%= notebook_path.to_s %>

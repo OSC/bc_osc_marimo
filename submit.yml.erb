@@ -1,0 +1,37 @@
+<%-
+
+  base_slurm_args = ["--nodes", "1", "--ntasks-per-node", "#{num_cores.to_i}"]
+
+  slurm_args = case node_type
+              when "gpu-40core"
+                base_slurm_args + ["--constraint", "40core"]
+              when "gpu-48core"
+                base_slurm_args + ["--constraint", "48core"]
+              when "any-40core"
+                base_slurm_args + ["--constraint", "40core"]
+              when "any-48core"
+                base_slurm_args + ["--constraint", "48core"]
+              when "hugemem"
+                base_slurm_args + ["--partition", "hugemem"]
+              when "largemem"
+                base_slurm_args + ["--partition", "largemem"]
+              when "debug"
+                base_slurm_args += ["--partition", "debug"]
+              when "quad-gpu"
+                base_slurm_args + ["--partition", "quad"]
+              else
+                base_slurm_args
+              end
+
+-%>
+---
+batch_connect:
+  template: "basic"
+script:
+<% if node_type =~ /gpu/ && gpus.to_i.positive? -%>
+  gpus_per_node: <%= gpus %>
+<% end -%>
+  native:
+    <%- slurm_args.each do |arg| %>
+    - "<%= arg %>"
+    <%- end %>

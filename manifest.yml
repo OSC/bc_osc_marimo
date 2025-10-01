@@ -1,0 +1,10 @@
+---
+name: marimo
+category: Interactive Apps
+subcategory: Servers
+role: batch_connect
+description: |
+  This app will launch a [marimo] notebook. You will be able
+  to interact with the marimo notebook through a VNC session.
+
+  [marimo]: https://marimo.io
