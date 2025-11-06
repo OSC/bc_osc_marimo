@@ -44,8 +44,10 @@ attributes:
     widget: 'select'
     options:
       - [
-          '0.14.17'
+          '0.14.17', '0.14.17',
+          data-hide-venv: true
         ]
+      - ['custom venv']
   working_dir:
     widget: "path_selector"
     label: "Working Directory or Notebook"
