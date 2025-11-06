@@ -43,7 +43,7 @@ module load project/ondemand app_marimo/<%= context.marimo_version %>
 <% else %>
 venv=<%= venv.to_s %>
 if [ -d "$venv/conda-meta" ]; then
-    module load miniconda3
+    module load miniconda3/24.1.2-py310
     source activate $venv
     conda install -c conda-forge marimo uv
 else
