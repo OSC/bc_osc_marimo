@@ -30,16 +30,16 @@ source /etc/os-release
 #
 
 # Load the required environment
-<%- unless context.cuda_version.empty? || context.cuda_version == 'none' -%>
-module load <%= context.cuda_version %>
+<%- unless context.auto_modules_cuda.empty? || context.auto_modules_cuda == 'none' -%>
+module load <%= context.auto_modules_cuda %>
 <%- end -%>
 
 <% 
-if !context.venv.empty?
+if !context.venv.empty? && context.custom_venv.to_i == 1
     venv = Pathname.new(context.venv)
     if ! venv.exist?
 %>
-module load project/ondemand app_marimo/<%= context.marimo_version %>
+module load project/ondemand <%= context.auto_modules_app_marimo %>
 <% else %>
 venv=<%= venv.to_s %>
 if [ -d "$venv/conda-meta" ]; then
@@ -54,7 +54,7 @@ fi
 end
 else 
 %>
-module load project/ondemand app_marimo/<%= context.marimo_version %>
+module load project/ondemand <%= context.auto_modules_app_marimo %>
 <% end %>
 
 set -x
