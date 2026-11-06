@@ -52,4 +52,4 @@ attributes:
     widget: "check_box"
     label: "Sandbox environment"
     value: 0
-    help: "If a notebook is specified, it will be launched in sandbox mode. This has no effect when launching a working directory."
+    help: "If a notebook is specified, it will be launched in sandbox mode. For marimo versions before v0.25.0 this has no effect when launching a working directory."

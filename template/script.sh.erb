@@ -9,9 +9,9 @@ if ! working_dir.exist?
 elsif working_dir.file?
     notebook_path = working_dir
     working_dir = working_dir.parent
-    if context.sandbox == '1'
-        sandbox='--sandbox'
-    end
+end
+if context.sandbox == '1'
+    sandbox='--sandbox'
 end
 %>
 
